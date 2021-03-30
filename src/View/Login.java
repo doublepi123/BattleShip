@@ -84,7 +84,7 @@ public class Login extends JFrame {
 
         contentPane.add(lblNewLabel_2);
 
-        JButton btnNewButton_1_1 = new JButton("Start Game");
+        JButton btnNewButton_1_1 = new JButton("Start GameModel");
         btnNewButton_1_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -137,10 +137,10 @@ public class Login extends JFrame {
         private static final long serialVersionUID = 1L;
 
         public MyDialog1(JFrame frame){
-            super(frame,"Game Rules");
+            super(frame,"GameModel Rules");
             Container conn = getContentPane();
             JLabel j=new JLabel();
-            j.setText("<html>Game Rules:<br>When a player hits a ship, they receive a set number of points, depending on which ship is hit. It is up to you to determine the points-per-hit for<br> the specific ships, but the points-per-hit must be different for each ship. In any case, a player <br>receives double the usual number of points if their hit results in a ship sinking (i.e., their hit means that all tiles corresponding to the ship have <br>now been hit). The two players take turns clicking grey tiles until all ships have been sunk, at which point the game ends. The player with <br>the most points at the end of the game wins the game. </html>");
+            j.setText("<html>GameModel Rules:<br>When a player hits a ship, they receive a set number of points, depending on which ship is hit. It is up to you to determine the points-per-hit for<br> the specific ships, but the points-per-hit must be different for each ship. In any case, a player <br>receives double the usual number of points if their hit results in a ship sinking (i.e., their hit means that all tiles corresponding to the ship have <br>now been hit). The two players take turns clicking grey tiles until all ships have been sunk, at which point the game ends. The player with <br>the most points at the end of the game wins the game. </html>");
             conn.add(j);
             setBounds(100,100,300,500);
         }

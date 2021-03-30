@@ -1,6 +1,8 @@
 package model;
 
-public class Game {
+import java.awt.*;
+
+public class GameModel {
     private int[][] data;
     private int[] score;
     private boolean[][] vis;
@@ -14,6 +16,7 @@ public class Game {
     //0 海洋
     //n 分数
     public int tryATry(int x, int y) {
+        System.out.println(x+" "+y);
         if (vis[x][y]) return -1;
         vis[x][y] = true;
         turns++;
@@ -31,7 +34,7 @@ public class Game {
         return last == 0;
     }
 
-    Game(int numberOfShip) {
+    public GameModel(int numberOfShip) {
         turns = 0;
         p1 = 0;
         p2 = 0;
@@ -74,6 +77,10 @@ public class Game {
         }
     }
 
+    public int getNumberOfShip() {
+        return numberOfShip;
+    }
+
     //随机生成两艘船并初始化数组
     void initShip(int p) {
         int ax = (int) (Math.random() * (n - 1));
@@ -104,9 +111,12 @@ public class Game {
         }
     }
 
+    public ShipColor[] getShipColor() {
+        return shipColor;
+    }
 
     public static void main(String[] args) {
-        Game game = new Game(4);
+        GameModel gameModel = new GameModel(4);
     }
 }
 

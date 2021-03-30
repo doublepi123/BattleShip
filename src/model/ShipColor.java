@@ -1,5 +1,5 @@
 package model;
-class ShipColor {
+public class ShipColor {
     int r, g, b;
     ShipColor() {
         r = (int) (255 * Math.random());

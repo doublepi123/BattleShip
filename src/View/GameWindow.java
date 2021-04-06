@@ -6,8 +6,10 @@ package View;
 
 import java.awt.event.*;
 import model.GameModel;
+import model.Rank;
 
 import java.awt.*;
+import java.io.*;
 import java.security.MessageDigest;
 import javax.swing.*;
 
@@ -17,7 +19,11 @@ import javax.swing.*;
 public class GameWindow extends JFrame {
     GameModel gameModel;
     GButton [][]shipCard;
-    public GameWindow() {
+    int row,col,model;
+    public GameWindow(int row,int col,int model) {
+        this.model = model;
+        this.row = row;
+        this.col = col;
         initComponents();
         initGame();
 
@@ -25,13 +31,15 @@ public class GameWindow extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Chenyang
+        // Generated using JFormDesigner Evaluation license - unknown
         label1 = new JLabel();
         label2 = new JLabel();
         play1Score = new JLabel();
         play2Score = new JLabel();
         panel1 = new JPanel();
         exit = new JButton();
+        btnHighScore = new JButton();
+        btnNewGame = new JButton();
         action1 = new quit();
 
         //======== this ========
@@ -41,41 +49,50 @@ public class GameWindow extends JFrame {
         //---- label1 ----
         label1.setText("Play 1");
         contentPane.add(label1);
-        label1.setBounds(new Rectangle(new Point(35, 15), label1.getPreferredSize()));
+        label1.setBounds(35, 20, 110, 45);
 
         //---- label2 ----
         label2.setText("Play 2");
         contentPane.add(label2);
-        label2.setBounds(new Rectangle(new Point(315, 15), label2.getPreferredSize()));
+        label2.setBounds(340, 20, 110, 45);
 
         //---- play1Score ----
         play1Score.setText("text");
         contentPane.add(play1Score);
-        play1Score.setBounds(new Rectangle(new Point(100, 15), play1Score.getPreferredSize()));
+        play1Score.setBounds(160, 20, 90, 45);
 
         //---- play2Score ----
         play2Score.setText("text");
         contentPane.add(play2Score);
-        play2Score.setBounds(new Rectangle(new Point(265, 15), play2Score.getPreferredSize()));
+        play2Score.setBounds(250, 20, 90, 45);
 
         //======== panel1 ========
         {
-            panel1.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing
-            .border.EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn",javax.swing.border.TitledBorder
-            .CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.
-            awt.Font.BOLD,12),java.awt.Color.red),panel1. getBorder()))
-            ;panel1. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
-            ){if("\u0062ord\u0065r".equals(e.getPropertyName()))throw new RuntimeException();}})
-            ;
+            panel1.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder
+            (0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border
+            .TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt
+            .Color.red),panel1. getBorder()));panel1. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void
+            propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException()
+            ;}});
             panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
         }
         contentPane.add(panel1);
-        panel1.setBounds(15, 90, 355, 350);
+        panel1.setBounds(5, 90, 675, 685);
 
         //---- exit ----
         exit.setAction(action1);
         contentPane.add(exit);
-        exit.setBounds(new Rectangle(new Point(260, 40), exit.getPreferredSize()));
+        exit.setBounds(new Rectangle(new Point(560, 55), exit.getPreferredSize()));
+
+        //---- btnHighScore ----
+        btnHighScore.setText("High Score");
+        contentPane.add(btnHighScore);
+        btnHighScore.setBounds(new Rectangle(new Point(445, 55), btnHighScore.getPreferredSize()));
+
+        //---- btnNewGame ----
+        btnNewGame.setText("New Game");
+        contentPane.add(btnNewGame);
+        btnNewGame.setBounds(new Rectangle(new Point(560, 15), btnNewGame.getPreferredSize()));
 
         {
             // compute preferred size
@@ -91,26 +108,28 @@ public class GameWindow extends JFrame {
             contentPane.setMinimumSize(preferredSize);
             contentPane.setPreferredSize(preferredSize);
         }
-        setSize(390, 480);
+        setSize(705, 825);
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Chenyang
+    // Generated using JFormDesigner Evaluation license - unknown
     private JLabel label1;
     private JLabel label2;
     private JLabel play1Score;
     private JLabel play2Score;
     private JPanel panel1;
     private JButton exit;
+    private JButton btnHighScore;
+    private JButton btnNewGame;
     private quit action1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     private class quit extends AbstractAction {
         private quit() {
             // JFormDesigner - Action initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-            // Generated using JFormDesigner Evaluation license - Chenyang
+            // Generated using JFormDesigner Evaluation license - unknown
             putValue(NAME, "Quit Game");
             // JFormDesigner - End of action initialization  //GEN-END:initComponents
         }
@@ -119,23 +138,63 @@ public class GameWindow extends JFrame {
             dispose();
         }
     }
+    private void finish(){
+        int winner;
+        if(gameModel.getP1() > gameModel.getP2()) winner = 1;
+        else winner = 2;
+        JOptionPane.showMessageDialog(null,"Play"+winner+" is win!Game is over!","Game Over",JOptionPane.WARNING_MESSAGE);
+        for(int i = 0 ; i < row ; i++)
+            for(int j = 0 ; j < col ; j++){
+                int numberOfShip = gameModel.getNumberOfShip(i,j);
+                shipCard[i][j].setForeground(gameModel.getShipColor(numberOfShip));
+                shipCard[i][j].setBackground(gameModel.getShipColor(numberOfShip));
+            }
+        saveScore();
+    }
     private void initGame(){
+        Font font=new Font("宋体",Font.BOLD,24);
+        btnHighScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RankWindow();
+            }
+        });
+        btnNewGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GameWindow(row,col,model);
+                dispose();
+            }
+        });
+        ((JFrame)rootPane.getParent()).setTitle("BattleShip");
+        label1.setFont(font);
+        label2.setFont(font);
+        play1Score.setFont(font);
+        play2Score.setFont(font);
         play2Score.setText("0");
         play1Score.setText("0");
-        gameModel = new GameModel(2);
-        shipCard = new GButton[8][];
-        for(int i = 0 ; i < 8 ; i++){
-            shipCard[i] = new GButton[8];
+        boolean flag = true;
+        while(flag) {
+            try {
+                gameModel = new GameModel(row, col,model);
+                flag = false;
+            } catch (java.lang.StackOverflowError e) {
+                flag = true;
+            }
         }
-        for(int i = 0 ; i < 8 ; i++){
-            for(int j = 0 ; j < 8 ; j++){
+        shipCard = new GButton[row][];
+        for(int i = 0 ; i < row ; i++){
+            shipCard[i] = new GButton[col];
+        }
+        for(int i = 0 ; i < row ; i++){
+            for(int j = 0 ; j < col ; j++){
                 shipCard[i][j] = new GButton();
-                shipCard[i][j].setPreferredSize(new Dimension(40,40));
+
+                shipCard[i][j].setPreferredSize(new Dimension(640/row,640/col));
                 shipCard[i][j].setPx(i);
                 shipCard[i][j].setPy(j);
                 shipCard[i][j].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-
                         GButton gButton = (GButton) e.getSource();
                         GameWindow gameWindow = (GameWindow) gButton.getParent().getParent().getParent().getParent().getParent();
                         int ans = gameModel.tryATry(gButton.getPx(),gButton.getPy());
@@ -149,8 +208,10 @@ public class GameWindow extends JFrame {
 //                            GameWindow gameWindow = (GameWindow) gButton.getParent().getParent().getParent().getParent();
                             gameWindow.play1Score.setText(String.valueOf(gameModel.getP1()));
                             gameWindow.play2Score.setText(String.valueOf(gameModel.getP2()));
-//                            int numberOfShip = gameModel.getNumberOfShip();
-//                            gButton.setForeground(new Color(gameModel.getShipColor()[gameModel.get]));
+                            int numberOfShip = gameModel.getNumberOfShip(gButton.getPx(),gButton.getPy());
+                            gButton.setForeground(gameModel.getShipColor(numberOfShip));
+                            gButton.setBackground(gameModel.getShipColor(numberOfShip));
+                            if(gameModel.check()) finish();
                         }
                     }
                 });
@@ -159,6 +220,39 @@ public class GameWindow extends JFrame {
         }
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        finish();
+    }
+    void saveScore(){
+        Rank rank = null;
+        try
+        {
+            FileInputStream fis =
+                    new FileInputStream("score.data");
+            ObjectInputStream in = new ObjectInputStream(fis);
+            rank = (Rank) in.readObject();
+            in.close();
+            fis.close();
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+            rank = new Rank();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            rank = new Rank();
+        }
+        rank.push(Math.max(gameModel.getP1(),gameModel.getP2()));
+        try
+        {
+            FileOutputStream fileOut =
+                    new FileOutputStream("score.data");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(rank);
+            out.close();
+            fileOut.close();
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+        }
     }
 }
 class GButton extends JButton{

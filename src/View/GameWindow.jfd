@@ -11,28 +11,36 @@ new FormModel {
 				"text": "Play 1"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 35
-				"y": 15
+				"y": 20
+				"width": 110
+				"height": 45
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
 				"text": "Play 2"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 315
-				"y": 15
+				"x": 340
+				"y": 20
+				"width": 110
+				"height": 45
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "play1Score"
 				"text": "text"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 100
-				"y": 15
+				"x": 160
+				"y": 20
+				"width": 90
+				"height": 45
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "play2Score"
 				"text": "text"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 265
-				"y": 15
+				"x": 250
+				"y": 20
+				"width": 90
+				"height": 45
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
 				"hgap": 1
@@ -40,21 +48,35 @@ new FormModel {
 			} ) {
 				name: "panel1"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 15
+				"x": 5
 				"y": 90
-				"height": 350
-				"width": 355
+				"height": 685
+				"width": 675
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "exit"
 				"action": new FormReference( "action1" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
-				"x": 260
-				"y": 40
+				"x": 560
+				"y": 55
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "btnHighScore"
+				"text": "High Score"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 445
+				"y": 55
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "btnNewGame"
+				"text": "New Game"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 560
+				"y": 15
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 5, 0 )
-			"size": new java.awt.Dimension( 390, 480 )
+			"size": new java.awt.Dimension( 705, 825 )
 		} )
 		add( new FormNonVisual( "javax.swing.AbstractAction" ) {
 			name: "action1"

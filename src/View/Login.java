@@ -13,8 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Login extends JFrame {
+	int n;
 
 	private JPanel contentPane;
 
@@ -25,6 +30,57 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	private int[][] readFromFile(){
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader("game.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		String str = "";
+		try {
+			n = Integer.valueOf(in.readLine());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		int data[][] = new int[n][];
+		for(int i = 0 ; i < n ; i++){
+			data[i] = new int[n];
+			for(int j = 0 ; j < n ; j++){
+				data[i][j] = 0;
+			}
+		}
+		int SPACEOFDATA = 0;
+		int pp = 0;
+		while(true){
+			try {
+				if (!((str = in.readLine()) != null)) break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(str.charAt(0) == 'C'){
+				SPACEOFDATA = 8;
+				pp = 4;
+			}else if(str.charAt(0) == 'B'){
+				SPACEOFDATA = 11;
+				pp = 3;
+			}else if(str.charAt(0) == 'S'){
+				SPACEOFDATA = 10;
+				pp = 2;
+			}
+			else if(str.charAt(0) == 'D'){
+				SPACEOFDATA = 10;
+				pp = 1;
+			}
+			for(int i = 0 ; i <= pp ; i++) {
+				System.out.println( str+" "+ pp+" "+ str.charAt(SPACEOFDATA));
+				data[str.charAt(SPACEOFDATA)-'0'-1][str.charAt(SPACEOFDATA+2)-'0'-1] = pp;
+				SPACEOFDATA+=4;
+			}
+		}
+		return data;
+	}
 	public Login() {
 		JComboBox jComboBox2;
 		setType(Type.POPUP);
@@ -47,7 +103,8 @@ public class Login extends JFrame {
 		lblNewLabel_1.setBounds(103, 39, 364, 26);
 		contentPane.add(lblNewLabel_1);
 		JComboBox jComboBox = new JComboBox<String>();
-		jComboBox.addItem("Random Ship");
+		jComboBox.addItem("Random ship");
+		jComboBox.addItem("Read from file");
 		jComboBox.setBounds(5, 75, 179, 34);
 		contentPane.add(jComboBox);
 		JComboBox jComboBox1 = new JComboBox<String>();
@@ -85,8 +142,19 @@ public class Login extends JFrame {
 				System.out.println("Here");
 				int index = jComboBox2.getSelectedIndex();
 				int model = jComboBox1.getSelectedIndex();
+				int option = jComboBox.getSelectedIndex();
 				System.out.println(index);
-				if(index== 0)
+				int data[][] = null;
+				GameWindow gameWindow;
+				if(option == 1){
+					data = readFromFile();
+					gameWindow = new GameWindow(n,n,model);
+					for(int i = 0 ; i < n ; i++){
+						for(int j = 0 ; j < n; j++){
+							gameWindow.getGameModel().getData()[i][j] = data[i][j];
+						}
+					}
+				}else if(index== 0)
 					new GameWindow(8,8,model);
 				else if(index == 1)
 					new GameWindow(7,7,model);

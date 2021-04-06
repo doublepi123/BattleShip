@@ -8,6 +8,7 @@ public class GameModel {
     private int[] score;
     private boolean[][] vis;
     private ShipColor[] shipColor;
+    private int[] shipLife;
     final private int numberOfShip = 4;
     final int n = 8;
     int last;
@@ -17,6 +18,11 @@ public class GameModel {
     //-1 已经访问过
     //0 海洋
     //n 分数
+
+    public int[][] getData() {
+        return data;
+    }
+
     public int tryATry(int x, int y) {
         System.out.println(x+" "+y);
         if (vis[x][y]) return -1;
@@ -24,8 +30,23 @@ public class GameModel {
         turns++;
         if(data[x][y] > 0) last--;
         System.out.println("last  : "+last);
-        if(turns%2 == 1) p1 += score[data[x][y]];
-        else p2 += score[data[x][y]];
+        if(model == 1){
+            if(shipLife[data[x][y]]-- == 1){
+                if(turns%2 == 1) p1 += 2 * score[data[x][y]];
+                else p2 += 2 * (score[data[x][y]]+5);
+            }else {
+                if (turns % 2 == 1) p1 += score[data[x][y]];
+                else p2 += score[data[x][y]] + 5;
+            }
+        }else {
+            if(shipLife[data[x][y]]-- == 1) {
+                if (turns % 2 == 1) p1 += 2*score[data[x][y]];
+                else p2 += 2*score[data[x][y]];
+            }else{
+                if (turns % 2 == 1) p1 += score[data[x][y]];
+                else p2 += score[data[x][y]];
+            }
+        }
         return data[x][y];
     }
     public int getP1(){
@@ -39,6 +60,7 @@ public class GameModel {
     }
 
     public GameModel(int row,int col,int model) {
+        shipLife = new int[5];
         turns = 0;
         p1 = 0;
         p2 = 0;
@@ -60,6 +82,7 @@ public class GameModel {
             initShip(i);
             score[i] = i * 10 + (int) (Math.random() * i);
             shipColor[i] = new ShipColor();
+            shipLife[i] = i+1;
         }
 //        DEBUG
         for(int i = 0 ; i < n ; i++){
@@ -130,8 +153,5 @@ public class GameModel {
         return new Color(shipColor[i].r,shipColor[i].g,Math.min(shipColor[i].b,128));
     }
 
-    public void saveRecord(){
-
-    }
 }
 
